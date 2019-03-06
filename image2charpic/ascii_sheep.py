@@ -30,21 +30,22 @@ def get_char(r, g, b, alpha=256):
 
     return ascii_char[int(gray / unit)]
 
+
 if __name__ == '__main__':
     im = Image.open(IMG)
 
-    im = im.resize((WIDTH,HEIGHT),Image.NEAREST)
+    im = im.resize((WIDTH, HEIGHT), Image.NEAREST)
 
     txt = ''
 
     for i in range(HEIGHT):
         for j in range(WIDTH):
-            txt += get_char(*im.getpixel((j,i)))
+            txt += get_char(*im.getpixel((j, i)))
         txt += '\n'
 
     if OUTPUT:
-        with open(OUTPUT,'w') as f:
+        with open(OUTPUT, 'w') as f:
             f.write(txt)
     else:
-        with open('output_sheep.txt','w') as f:
+        with open('output_sheep.txt', 'w') as f:
             f.write(txt)
