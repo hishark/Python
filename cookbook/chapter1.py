@@ -1,3 +1,7 @@
+"""
+    desc: cookbook notes
+    link: https://python3-cookbook.readthedocs.io/zh_CN/latest/index.html
+"""
 import sys
 import os
 
@@ -7,7 +11,8 @@ def avg(number):
     if length == 0:
         return 0
     else:
-        return sum(number)/length
+        return sum(number) / length
+
 
 def drop_first_last(grades):
     first, *middle, last = grades
