@@ -214,10 +214,63 @@ def control_dict_order():
     d['hungry'] = 3
     d['too'] = 4
     for key in d:
-        print(key,d[key])
+        print(key, d[key])
     print(json.dumps(d))
 
 
+def dict_operation():
+    """
+    字典的运算
+    :return:
+    """
+    prices = {
+        'ACME': 45.23,
+        'AAPL': 612.78,
+        'IBM': 205.55,
+        'HPQ': 37.20,
+        'FB': 10.75
+    }
+    print(prices)
+    # zip() 函数用于将可迭代的对象作为参数，将对象中对应的元素打包成一个个元组，然后返回由这些元组组成的列表。
+    # zip 方法在 Python 2 和 Python 3 中的不同：在 Python 3.x 中为了减少内存，zip() 返回的是一个对象。如需展示列表，需手动 list() 转换。
+    print(list(zip(prices.values(), prices.keys())))
+    prices_and_names = zip(prices.values(), prices.keys())
+    # zip创建的是一个只能访问一次的迭代器，若继续输出max会报错
+    print('min=', min(prices_and_names))
+    # print('max=',max(prices_and_names))
+
+    prices_sorted = sorted(zip(prices.values(), prices.keys()))
+    # sorted之后输出两次没得错
+    print('sorted:', prices_sorted)
+    print('sorted:', prices_sorted)
+
+
+def dict_same_point():
+    """
+    查找两字典的相同点
+    :return:
+    """
+    a = {
+        'x': 1,
+        'y': 2,
+        'z': 3
+    }
+
+    b = {
+        'w': 10,
+        'x': 11,
+        'y': 2
+    }
+
+    print('same keys:', a.keys() & b.keys())
+    print('same values:', a.items() & b.items())
+    # 下面这行values&values会报错--[TypeError: unsupported operand type(s) for &: 'dict_values' and 'dict_values']
+    # print('same values:', a.values() & b.values())
+
+    c = {key:a[key] for key in a.keys() - {'z','w'}}
+    print(c)
+
+
 if __name__ == '__main__':
-    control_dict_order()
+    dict_same_point()
     pass
