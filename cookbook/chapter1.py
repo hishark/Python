@@ -4,8 +4,11 @@
 """
 import sys
 import os
+import json
 from collections import deque
 import heapq
+from collections import defaultdict
+from collections import OrderedDict
 
 
 def avg(number):
@@ -104,6 +107,7 @@ def complex_get_largest_smallest():
     print(cheap)
     print(expensive)
 
+
 def heap_pop():
     nums = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     print(heapq.heappop(nums))
@@ -111,16 +115,109 @@ def heap_pop():
     print(heapq.heappop(nums))
     print(nums)
 
+
 def sort_cut():
     """
     查找最大的N个数或者最小的N个数，若集合大小与N的大小接近，先排序再切片会更快点
     若不接近，直接用nlargest和nsmallest会更方便
     :return:
     """
-    items = [1,2,3,4,5,6,7,8,9]
+    items = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     N = 8
     print(sorted(items)[-N:])
 
+
+class PriorityQueue:
+    def __init__(self):
+        self._queue = []
+        self._index = 0
+
+    def push(self, item, priority):
+        """
+        队列包含了一个 (-priority, index, item) 的元组。
+        优先级为负数的目的是使得元素按照优先级从高到低排序。
+        这个跟普通的按优先级从低到高排序的堆排序恰巧相反。
+
+        index 变量的作用是保证同等优先级元素的正确排序。
+        通过保存一个不断增加的 index 下标变量，可以确保元素按照它们插入的顺序排序。
+        而且， index 变量也在相同优先级元素比较的时候起到重要作用。
+        """
+        heapq.heappush(self._queue, (-priority, self._index, item))
+        self._index += 1
+
+    def pop(self):
+        return heapq.heappop(self._queue)[-1]
+
+
+class Item:
+    def __init__(self, name):
+        self.name = name
+
+    # https://blog.csdn.net/luckytanggu/article/details/53649156
+    # __repr__的用处
+    def __repr__(self):
+        return 'Item(%s)' % self.name
+
+
+def show_priority_queue():
+    q = PriorityQueue()
+    q.push(Item('cool'), 3)
+    q.push(Item('hishark'), 5)
+    q.push(Item('777'), 4)
+    q.push(Item('guy'), 2)
+    q.push(Item('๑乛◡乛๑'), 1)
+    i = 0
+    while i < 5:
+        print(q.pop())
+        i += 1
+
+
+def multidict():
+    """
+    一个键对应多个值的字典
+    :return:
+    """
+    #
+    d = defaultdict(list)
+    d['a'].append(1)
+    d['a'].append(2)
+    d['a'].append(3)
+    print(d)
+
+    d = defaultdict(set)
+    d['a'].add(1)
+    d['a'].add(1)
+    d['a'].add(2)
+    print(d)
+
+    d = defaultdict(list)
+    pairs = [('a', 'Ah...'), ('a', 'movie!!!'), ('a', 'yeah!!!')]
+    for key, value in pairs:
+        d[key].append(value)
+    print(d)
+
+
+def control_dict_order():
+    """
+    控制字典中元素的顺序
+    使用ordereddict类，在迭代操作时它会保持元素被插入时的顺序
+
+    当你想要构建一个将来需要序列化或编码成其他格式的映射的时候，
+    OrderedDict 是非常有用的。
+    比如，你想精确控制以 JSON 编码后字段的顺序，
+    你可以先使用 OrderedDict 来构建这样的数据
+    :return:
+    """
+    d = OrderedDict()
+    d['hello'] = 1
+    d['what'] = 2
+    d['hungry'] = 3
+    d['too'] = 4
+    for key in d:
+        print(key,d[key])
+    print(json.dumps(d))
+
+
 if __name__ == '__main__':
-    sort_cut()
+    control_dict_order()
     pass
