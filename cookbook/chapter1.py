@@ -273,4 +273,5 @@ def dict_same_point():
 
 if __name__ == '__main__':
     dict_same_point()
+    print('test')
     pass
