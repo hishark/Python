@@ -255,23 +255,47 @@ def dict_same_point():
         'y': 2,
         'z': 3
     }
-
     b = {
         'w': 10,
         'x': 11,
         'y': 2
     }
-
     print('same keys:', a.keys() & b.keys())
+    # 如果你想对集合的键执行一些普通的集合操作，可以直接使用键视图对象而不用先将它们转换成一个set
+    print('a - diff keys:', a.keys() - b.keys())
     print('same values:', a.items() & b.items())
     # 下面这行values&values会报错--[TypeError: unsupported operand type(s) for &: 'dict_values' and 'dict_values']
+    # 无法使用.values()找共同值噢
     # print('same values:', a.values() & b.values())
-
-    c = {key:a[key] for key in a.keys() - {'z','w'}}
+    c = {key: a[key] for key in a.keys() - {'z', 'w'}}
     print(c)
 
 
+def dedupe(items):
+    """
+    删除序列相同元素 - 值为hashable类型的序列
+    :param items:
+    :return:
+    """
+    seen = set()
+    for item in items:
+        if item not in seen:
+            yield item
+            seen.add(item)
+            print('seen=', seen)
+
+
+def dedupe_example():
+    """
+    删除序列的相同元素 example
+    :return:
+    """
+    a = [1, 5, 2, 1, 9, 1, 5, 10]
+    for x in dedupe(a):
+        print(x)
+    # print(list(dedupe(a)))
+
+
 if __name__ == '__main__':
-    dict_same_point()
-    print('test')
+    dedupe_example()
     pass
