@@ -296,6 +296,70 @@ def dedupe_example():
     # print(list(dedupe(a)))
 
 
+def name_slice():
+    """
+    命名切片
+    代码中出现大量硬编码下标会降低代码的可读性和可维护性
+    该方案可更加清晰的表达代码的目的
+    内置的slice()函数创建了一个切片对象，所有使用切片的地方都可以使用切片对象
+    """
+    str = '..........100..........'
+    SCORE = slice(10, 13)
+    print(str[SCORE])
+
+
+def most_common_element():
+    """
+    序列中出现次数最多的元素
+    collections.Counter 类就是专门为这类问题而设计的， 它甚至有一个有用的 most_common() 方法直接给了你答案。
+    Counter很容易跟数学运算操作相结合，在解决制表或者计数数据的场合非常有用
+    """
+    from collections import Counter
+    words = [
+        'look', 'into', 'my', 'eyes', 'look', 'into', 'my', 'eyes',
+        'the', 'eyes', 'the', 'eyes', 'the', 'eyes', 'not', 'around', 'the',
+        'eyes', "don't", 'look', 'around', 'the', 'eyes', 'look', 'into',
+        'my', 'eyes', "you're", 'under'
+    ]
+    morewords = ['why', 'are', 'you', 'not', 'looking', 'in', 'my', 'eyes']
+    word_counts = Counter(words)
+    # 找出出现频率最高的三个单词
+    top_three = word_counts.most_common(3)
+    print(top_three)
+    a = Counter(words)
+    b = Counter(morewords)
+    print('Counter(words):\n', a)
+    print('Counter(morewords):\n', b)
+    print('a+b:\n', a + b)
+    print('a-b:\n', a - b)
+
+
+def sort_dict_by_key():
+    """
+    通过某个关键字排序一个字典列表
+    使用operator的itemgetter函数可以非常容易的排序
+    """
+    rows = [
+        {'fname': 'Brian', 'lname': 'Jones', 'uid': 1003},
+        {'fname': 'David', 'lname': 'Beazley', 'uid': 1002},
+        {'fname': 'John', 'lname': 'Cleese', 'uid': 1001},
+        {'fname': 'Big', 'lname': 'Jones', 'uid': 1004}
+    ]
+    from operator import itemgetter
+    # itemgetter支持指定key排序
+    rows_by_fname = sorted(rows, key=itemgetter('fname'))
+    rows_by_uid = sorted(rows, key=itemgetter('uid'))
+    print('rows_by_fname', rows_by_fname)
+    print('rows_by_uid', rows_by_uid)
+    # itemgetter也支持多个key
+    rows_by_lfname = sorted(rows, key=itemgetter('lname', 'fname'))
+    print('rows_by_lfname', rows_by_lfname)
+    # itemgetter同样适用于min和max等函数
+    rows_uid_min = min(rows, key=itemgetter('uid'))
+    rows_uid_max = max(rows, key=itemgetter('uid'))
+    print('rows_min', rows_uid_min)
+    print('rows_max', rows_uid_max)
+
+
 if __name__ == '__main__':
-    dedupe_example()
-    pass
+    sort_dict_by_key()
