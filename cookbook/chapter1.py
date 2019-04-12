@@ -336,7 +336,7 @@ def most_common_element():
 
 def sort_dict_by_key():
     """
-    通过某个关键字排序一个字典列表
+    1.13 - 通过某个关键字排序一个字典列表
     使用operator的itemgetter函数可以非常容易的排序
     """
     rows = [
@@ -361,5 +361,52 @@ def sort_dict_by_key():
     print('rows_max', rows_uid_max)
 
 
+class User:
+    def __init__(self, user_id):
+        self.user_id = user_id
+
+    def __repr__(self):
+        return 'User({})'.format(self.user_id)
+
+
+def sort_notcompare():
+    """
+    1.14 排序不支持原生比较的对象
+    """
+    users = [User(77), User(1), User(99)]
+    print('before sorted >>>', users)
+    from operator import attrgetter
+    print('after sorted >>>', sorted(users, key=attrgetter('user_id')))
+    # attrgetter同样适用于min和max之类的函数
+    print('min >>>', min(users, key=attrgetter('user_id')))
+    print('max >>>', max(users, key=attrgetter('user_id')))
+
+
+def sort_by_field():
+    """
+    1.15 通过某个字段将记录分组
+    """
+    rows = [
+        {'address': '5412 N CLARK', 'date': '07/01/2012'},
+        {'address': '5148 N CLARK', 'date': '07/04/2012'},
+        {'address': '5800 E 58TH', 'date': '07/02/2012'},
+        {'address': '2122 N CLARK', 'date': '07/03/2012'},
+        {'address': '5645 N RAVENSWOOD', 'date': '07/02/2012'},
+        {'address': '1060 W ADDISON', 'date': '07/02/2012'},
+        {'address': '4801 N BROADWAY', 'date': '07/01/2012'},
+        {'address': '1039 W GRANVILLE', 'date': '07/04/2012'},
+    ]
+    from operator import itemgetter
+    from itertools import groupby
+    # groupby函数扫描整个序列并且查找连续相同值，所以这里务必先sort排个序
+    # groupby仅仅检查连续的元素，如果事先没有排序完成的话，分组函数将得不到想要的结果
+    rows.sort(key=itemgetter('date'))
+    for date, items in groupby(rows, key=itemgetter('date')):
+        print(date)
+        for i in items:
+            print('\t', i)
+    # 如果你仅仅只是想根据 date 字段将数据分组到一个大的数据结构中去，并且允许随机访问， 那么你最好使用 defaultdict() 来构建一个多值字典
+
+
 if __name__ == '__main__':
-    sort_dict_by_key()
+    sort_by_field()
